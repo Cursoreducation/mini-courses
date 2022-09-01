@@ -37,6 +37,7 @@ class PostDB:
                 """
         }
     ]
+    last_id = 3
 
     def get_all(self):
         return self.storage
@@ -46,9 +47,27 @@ class PostDB:
             if post["id"] == id_:
                 return post
 
+    def create(self, title, text):
+        self.last_id += 1
+        new_post = {
+            "id": self.last_id,
+            "title": title,
+            "text": text
+        }
+        self.storage.append(new_post)
+        return new_post
 
+    def update(self, id_, title, text):
+        post = {
+            "id": id_,
+            "title": title,
+            "text": text
+        }
+        for i in range(len(self.storage)):
+            if self.storage[i].get("id") == id_:
+                self.storage[i] = post
 
+        return post
 
-unittest
-pytest
-nose
+    def delete(self, id_):
+        self.storage = [post for post in self.storage if post["id"] != id_]
